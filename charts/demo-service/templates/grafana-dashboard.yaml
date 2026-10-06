@@ -1,0 +1,13 @@
+{{- if .Values.grafanaDashboard.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "demo-service.fullname" . }}-dashboard
+  labels:
+    {{- include "demo-service.labels" . | nindent 4 }}
+    # The Grafana sidecar in kube-prometheus-stack loads any ConfigMap with this label.
+    grafana_dashboard: "1"
+data:
+  demo-service.json: |-
+{{ .Files.Get "dashboards/demo-service.json" | indent 4 }}
+{{- end }}

@@ -1,0 +1,6 @@
+apiVersion: v2
+name: demo-service
+description: Small Flask service with Prometheus metrics, deployed by Helm and synced by Argo CD
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

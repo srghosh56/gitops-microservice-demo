@@ -1,0 +1,35 @@
+{{- if .Values.prometheusRule.enabled }}
+{{- $name := include "demo-service.fullname" . }}
+{{- $sel := printf "namespace=\"%s\",service=\"%s\"" .Release.Namespace $name }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "demo-service.labels" . | nindent 4 }}
+spec:
+  groups:
+    - name: {{ $name }}.rules
+      rules:
+        - alert: DemoServiceHighErrorRate
+          expr: |
+            sum(rate(http_requests_total{ {{- $sel -}},status=~"5.."}[5m]))
+              /
+            sum(rate(http_requests_total{ {{- $sel -}} }[5m]))
+              > {{ .Values.prometheusRule.errorRateThreshold }}
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: "{{ $name }} is returning too many 5xx responses"
+            description: "More than {{ .Values.prometheusRule.errorRateThreshold }} of requests failed over the last 5 minutes."
+            runbook_url: {{ .Values.prometheusRule.runbookUrl | quote }}
+        - alert: DemoServiceDown
+          expr: absent(up{ {{- $sel -}} } == 1)
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: "No healthy {{ $name }} targets are being scraped"
+            runbook_url: {{ .Values.prometheusRule.runbookUrl | quote }}
+{{- end }}

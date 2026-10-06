@@ -1,0 +1,38 @@
+# Number of pods. Two replicas plus maxUnavailable: 0 gives zero-downtime rolling updates.
+replicaCount: 2
+
+image:
+  # Local image loaded into kind with `make load`. In production this would be a registry path.
+  repository: demo-service
+  tag: "0.1.0"
+  pullPolicy: IfNotPresent
+
+app:
+  # Fraction (0.0 to 1.0) of requests to "/" that return a simulated 500. Used in RUNBOOK drills.
+  errorRate: "0.0"
+
+service:
+  port: 80
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 250m
+    memory: 128Mi
+
+serviceMonitor:
+  enabled: true
+  interval: 15s
+
+prometheusRule:
+  enabled: true
+  # Alert when more than 5% of requests fail for 2 minutes.
+  errorRateThreshold: 0.05
+  runbookUrl: "https://github.com/srghosh56/gitops-microservice-demo/blob/main/RUNBOOK.md"
+
+grafanaDashboard:
+  enabled: true
+
+fullnameOverride: ""

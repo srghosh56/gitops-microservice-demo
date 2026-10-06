@@ -1,0 +1,10 @@
+.git
+.github
+charts
+terraform
+argocd
+tests
+*.md
+__pycache__
+.pytest_cache
+.venv
