@@ -1,4 +1,4 @@
-CLUSTER ?= skao-demo
+CLUSTER ?= gitops-demo
 IMAGE   ?= demo-service
 TAG     ?= 0.1.0
 

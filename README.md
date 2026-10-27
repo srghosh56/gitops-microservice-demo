@@ -12,7 +12,7 @@ The goal is to practise the day-to-day loop of operating a containerised service
                               │               docker build, Trivy scan)
                               │
                               ▼  watched by
- ┌──────────────────────── kind cluster "skao-demo" ────────────────────────┐
+ ┌─────────────────────── kind cluster "gitops-demo" ───────────────────────┐
  │                                                                          │
  │  argocd namespace      Argo CD ── syncs charts/demo-service ──┐          │
  │                                                               ▼          │
@@ -54,7 +54,7 @@ make test
 make build                      # demo-service:0.1.0
 
 # 2. Cluster and platform
-make cluster                    # kind cluster "skao-demo"
+make cluster                    # kind cluster "gitops-demo"
 export TF_VAR_grafana_admin_password='choose-a-password'
 make platform                   # Terraform installs kube-prometheus-stack + Argo CD (5-10 min)
 

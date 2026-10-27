@@ -7,7 +7,7 @@ variable "kubeconfig_path" {
 variable "kube_context" {
   description = "kubeconfig context of the kind cluster created by `make cluster`."
   type        = string
-  default     = "kind-skao-demo"
+  default     = "kind-gitops-demo"
 }
 
 variable "grafana_admin_password" {
